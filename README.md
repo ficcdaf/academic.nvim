@@ -39,5 +39,5 @@ The following commands are provided:
 
 | User Command     | Lua API                                    | Requires Dependencies |
 | ---------------- | ------------------------------------------ | --------------------- |
-| `AcademicUpdate` | `require("academic").update()`             | No                    |
-| `AcademicBuild`  | `require("academic").generate_spellfile()` | Yes                   |
+| `AcademicUpdate` | `require("academic").update()`             | Yes                   |
+| `AcademicBuild`  | `require("academic").generate_spellfile()` | No                    |
