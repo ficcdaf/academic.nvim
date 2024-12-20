@@ -1,7 +1,11 @@
 M = {}
 
+local function get_root()
+	return vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":h:h")
+end
+
 local function get_dictionary()
-	local root = vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":h:h")
+	local root = get_root()
 	local dict_path = root .. "/words/en-academic"
 	return dict_path
 end
@@ -19,10 +23,6 @@ M.generate_spellfile = function()
 	-- Create spell_dir if it doesn't exist
 	vim.fn.mkdir(get_spell(true), "p")
 	vim.cmd("mkspell! " .. get_spell() .. " " .. get_dictionary())
-end
-
-M.test = function()
-	print(M.config.add)
 end
 
 local add_lang = function(lang)
@@ -56,32 +56,30 @@ local function check_build()
 	end
 end
 
-M.config = {
-	add = true,
-}
-
-local function load()
-	if M.config.add then
-		-- print("add true")
-		-- We generate the spellfile if it doesn't exist
-		if check_build() then
-			M.generate_spellfile()
-		end
-		add_lang("en-academic")
-	else
-		-- print("add false")
+M.update = function()
+	local cmd = { "bash", "-c", get_root() .. "/scripts/generate-wordlist.sh" }
+	local success = pcall(function()
+		vim.system(cmd, {}, function()
+			vim.notify("Academic dictionary updated!", vim.log.levels.INFO)
+		end)
+	end)
+	if not success then
+		vim.notify("Manual update requires bash, curl, and hunspell!")
 	end
+	M.load()
 end
 
--- TODO: create a `once` autocmd to execute load() on VimEnter?
-
-M.setup = function(opts)
-	M.config = vim.tbl_extend("force", M.config, opts or {})
-	-- print(opts.add)
-	-- load()
-	-- return M
+M.load = function()
+	-- We generate the spellfile if it doesn't exist
+	if check_build() then
+		vim.notify("Building spellfile...")
+		M.generate_spellfile()
+	end
+	add_lang("en-academic")
 end
 
-load()
+M.setup = function()
+	M.load()
+end
 
 return M
