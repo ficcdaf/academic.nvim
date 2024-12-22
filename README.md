@@ -16,7 +16,7 @@ You can install `academic` with your favourite plugin manager. For example, with
 {
   "ficcdaf/academic.nvim",
   -- optional: only load for certain filetypes
-  event = { "FileType markdown", "FileType tex" },
+  ft = {"markdown", "tex"}
 }
 ```
 
@@ -27,11 +27,11 @@ If you are not using a plugin manager, you can clone this repository, add it to 
 require("academic").load()
 ```
 
-If you do not specify an `event`, the plugin will be loaded on startup.
+`academic.nvim` will automatically run its setup logic as soon as it is loaded. There are currently no configuration options.
 
 ## Optional Dependencies
 
-If you wish to build your dictionary directly from Acamedic with the update function, you must have `bash`, `curl`, and `unmunch` available on your `$PATH`. `unmunch` is installed alongside Hunspell on most systems.
+If you wish to build your dictionary directly from Acamedic with the update function, you must have `bash`, `curl`, and `unmunch` available on your `$PATH`. `unmunch` is installed alongside `hunspell` on most systems. This functionality is _optional_. **A reasonably up-to-date version of the dictionary is included with this plugin.**
 
 # Usage
 
