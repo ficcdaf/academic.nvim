@@ -1,4 +1,4 @@
-M = {}
+local M = {}
 
 ---@class AcademicOptions
 M.opts = {
