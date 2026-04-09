@@ -17,7 +17,7 @@ local function get_dictionary()
 end
 
 local function get_spell(dir)
-	local spell_dir = vim.fn["spellfile#WritableSpellDir"]() .. "/"
+	local spell_dir = vim.fn.stdpath("data") .. "/site/spell/"
 	if dir then
 		return spell_dir
 	else
